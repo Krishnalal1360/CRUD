@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CustomerRequest;
+use App\Models\Customer;
 
 class CustomerController extends Controller
 {
@@ -12,7 +14,9 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        return view('customer.index');
+        $customers = Customer::all();
+        //
+        return view('customer.index', compact('customers'));
     }
 
     /**
@@ -27,10 +31,42 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
         //
-        dd($request->all());
+        //dd($request->all());
+        //
+        /*$customer = new Customer();
+        //
+        $customer->first_name = $request->first_name;
+        $customer->last_name = $request->last_name;
+        $customer->email = $request->email;
+        $customer->phone = $request->phone;
+        $customer->bank_account_number = $request->bank_account_number;
+        $customer->about = $request->about;
+        //
+        $customer->save();*/
+        //
+        $data = $request->validated();
+        //
+        if($request->hasFile('image')){
+            //
+            //$imagePath = $request->file('image')->store('default_images', 'public');
+            //
+            /*$request->merge([
+                'image' => $imagePath,
+            ]);*/
+            //
+            //$data['image'] = $request->file('image')->store('default_image', 'public');
+            //
+            $data['image'] = $request->file('image')->store('', 'public');
+        }
+        //
+        Customer::create($data);
+        //
+        //return view('customer.index');
+        //
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -47,6 +83,9 @@ class CustomerController extends Controller
     public function edit(string $id)
     {
         //
+        $customer = Customer::find($id);
+        //
+        return view('customer.edit', compact('customer'));
     }
 
     /**
@@ -55,6 +94,7 @@ class CustomerController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        //dd($request->all());
     }
 
     /**
