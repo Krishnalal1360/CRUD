@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('bank_account_number')->unique();
             $table->text('about')->nullable();
+            //$table->softDeletes();
             $table->timestamps();
         });
     }
